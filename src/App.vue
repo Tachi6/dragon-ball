@@ -1,20 +1,38 @@
 <script setup>
+import DarkMode from './components/icons/DarkMode.vue';
+import LightMode from './components/icons/LightMode.vue';
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <header>
-    <img class="img-logo" alt="Dragon Ball Z logo" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Dragon_Ball_Z_logo.svg">
+    <img class="img-logo" alt="Dragon Ball Z logo" src="./assets/img/dragon-ball-z-logo.svg">
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/">Inicio</RouterLink>
+        <RouterLink to="/details">Personajes</RouterLink>
+        <RouterLink to="/about">Batalla</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
-    <input type="text" class="search-field" placeholder="Buscar personaje">
+    <div class="theme-changer">
+      <!-- <div class="indicator"></div> -->
+      <div class="side">
+        <label for="light">
+          <input type="radio" name="theme-mode" id="light" value="light" checked>
+          <LightMode class="svg"/>
+        </label>
+      </div>
+      <div class="side">
+        <label for="dark">
+          <input type="radio" name="theme-mode" id="dark" value="dark">
+          <DarkMode class="svg"/>
+        </label>
+      </div>
+
+
+    </div>
+    <!-- <input type="text" class="search-field" placeholder="Buscar personaje"> -->
   </header>
   <RouterView />
 
@@ -59,6 +77,73 @@ nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
+.theme-changer{
+  display: flex;
+  height: 36px;
+  width: 150px;
+  background-color: transparent;
+  border: 1px solid white;
+  outline: none;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.side {
+  width: 50%;
+  height: 100%;
+  transition: 0.5s;
+}
+
+label {
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+/* .indicator {
+  height: 50px;
+  width: 103px;
+  background-color: #D9B346;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  } */
+
+.side:has(input[type="radio"]:checked) {
+  background-color: #D9B346;
+}
+
+input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+svg {
+  position: absolute;
+  height: 90%;
+  width: 90%;
+  fill: #D9B346;
+  transition: 0.5s;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+input[type="radio"]:checked + svg {
+  fill: white;
+}
+
 .search-field {
   height: 52px;
   width: 208px;
@@ -82,5 +167,9 @@ nav a.router-link-exact-active:hover {
 }
 input::placeholder {
   color: white;
+}
+
+.theme changer{
+
 }
 </style>

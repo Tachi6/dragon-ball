@@ -20,6 +20,7 @@ body {
   max-width: 1280px;
   padding: 0 20px;
   font-family: graphik-medium;
+  color: white;
 }
 
 @media (min-width: 1024px) {
