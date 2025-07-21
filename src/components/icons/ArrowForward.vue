@@ -1,0 +1,3 @@
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M320-39 210-148l332-332-332-332 110-110 441 442L320-39Z"/></svg>
+</template>

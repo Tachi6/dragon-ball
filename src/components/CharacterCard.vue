@@ -1,26 +1,29 @@
 <script setup>
+
+const props = defineProps(['character'])
+
 </script>
 
 <template>
-  <div class="card-container">
+  <div class="card-container" @click="$router.push({name: 'details', params: {id: props.character.id}})">
     <div class="card-background"></div>
-    <img src="https://dragonball-api.com/characters/goku_normal.webp" alt="goku" class="card-img">
+    <img :src="props.character.image" alt="goku" class="card-img">
     <div class="card-text">
-      <h2>GOKU</h2>
-      <p>Ataque: 522650</p>
-      <p>Defensa: 522650</p>
+      <h2>{{ props.character.name }}</h2>
+      <p>Ataque: {{ props.character.maxKi }}</p>
+      <p>Defensa: {{ props.character.maxKi }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
   .card-container {
-    width: 260px;
+    width: 12.5em;
     aspect-ratio: 5/7;
-    border: 4px solid var(--action-color);
+    border: 0.25em solid var(--action-color);
     border-radius: 0.5em;
     position: relative;
-    padding: 30px;
+    padding: 1.5em;
   }
 
   .card-background {
@@ -35,19 +38,19 @@
     left: 0;
     right: 0;
     top: 0;
-    bottom: 80px;
+    bottom: 5em;
     margin: auto;
   }
 
 
   .card-img {
-    height: 66%;
+    height: 63%;
     margin: auto;
     display: block;
     position: absolute;
     object-fit: contain;
     z-index: 1;
-    top: 15px;
+    top: 0.6em;
     left: 0;
     right: 0;
     margin-left: auto;
@@ -61,27 +64,20 @@
     right:0;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 10px;
+    margin-bottom: 0.6em;
   }
 
   h2 {
     color: var(--action-color);
     text-align: center;
     font-weight: bolder;
-    font-size: 2em;
+    font-size: 1.5em;
     line-height: 1.6;
     letter-spacing: 0.2px;
   }
 
-
-  h3 {
-    text-align: center;
-    font-size: x-large;
-    margin-bottom: 10px;
-  }
-
   p {
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 0.25em;
   }
 </style>

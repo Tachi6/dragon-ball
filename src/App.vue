@@ -1,9 +1,7 @@
 <script setup>
-import DarkMode from './components/icons/DarkMode.vue';
-import LightMode from './components/icons/LightMode.vue';
-import { RouterLink, RouterView } from 'vue-router'
 
-const changeTheme = (e) => document.body.className = e.target.value
+import ThemeChanger from './components/ThemeChanger.vue';
+import { RouterLink, RouterView } from 'vue-router'
 
 </script>
 
@@ -13,27 +11,12 @@ const changeTheme = (e) => document.body.className = e.target.value
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/details">Personajes</RouterLink>
-        <RouterLink to="/about">Batalla</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="#">Personajes</RouterLink>
+        <RouterLink to="#">Batalla</RouterLink>
+        <RouterLink to="#">About</RouterLink>
       </nav>
     </div>
-    <div class="theme-changer">
-      <!-- <div class="indicator"></div> -->
-      <div class="side">
-        <label for="light">
-          <input type="radio" name="theme-mode" id="light" value="light" @change="changeTheme" checked>
-          <LightMode class="svg"/>
-        </label>
-      </div>
-      <div class="side">
-        <label for="dark">
-          <input type="radio" name="theme-mode" id="dark" value="dark" @change="changeTheme">
-          <DarkMode class="svg"/>
-        </label>
-      </div>
-    </div>
-    <!-- <input type="text" class="search-field" placeholder="Buscar personaje"> -->
+    <ThemeChanger />
   </header>
   <RouterView />
 </template>
@@ -41,12 +24,12 @@ const changeTheme = (e) => document.body.className = e.target.value
 <style scoped>
 
 header{
-  padding: 20px 0;
+  padding: 1.25em 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 25px
+  gap: 1.5em
 }
 
 .img-logo {
@@ -77,65 +60,7 @@ nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
-.theme-changer{
-  display: flex;
-  height: 36px;
-  width: 150px;
-  background-color: transparent;
-  border: 1px solid var(--text-color);
-  outline: none;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
-.side {
-  width: 50%;
-  height: 100%;
-  transition: 0.5s;
-}
-
-label {
-  position: relative;
-  display: block;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  cursor: pointer;
-}
-
-.side:has(input[type="radio"]:checked) {
-  background-color: var(--action-color);
-}
-
-input[type="radio"] {
-  opacity: 0;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-svg {
-  position: absolute;
-  height: 90%;
-  width: 90%;
-  fill: var(--action-color);
-  transition: 0.5s;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-
-input[type="radio"]:checked + svg {
-  fill: var(--text-color);
-}
-
-.search-field {
+/* .search-field {
   height: 52px;
   width: 208px;
   padding: 0 2em;
@@ -158,6 +83,6 @@ input[type="radio"]:checked + svg {
 }
 input::placeholder {
   color: white;
-}
+} */
 
 </style>

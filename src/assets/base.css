@@ -1,24 +1,19 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* Color variables */
 :root {
   --bg-color: #f8f8f8;
   --text-color: #222222;
   --action-color: #B8902C;
 }
 
-/* semantic color variables for this project */
-/* :root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+@font-face {
+  font-family: graphik-medium;
+  src: url(./fonts/Graphik-Medium.ttf);
+}
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-} */
+@font-face {
+  font-family: mulish-extrabold;
+  src: url(../assets/fonts/Mulish-ExtraBold.ttf);
+}
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -28,19 +23,18 @@
   }
 } */
 
-/* *,
-*::before,
-*::after {
-  box-sizing: border-box;
+* {
   margin: 0;
-  font-weight: normal;
-} */
-
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
+  min-height: 100vh;
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: 0.5s;
+  font-family: graphik-medium;
 }
 
 body.light {
@@ -54,30 +48,3 @@ body.dark {
   --text-color: #f8f8f8;
   --action-color: #d9b346;
 }
-
-/* body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-} */
