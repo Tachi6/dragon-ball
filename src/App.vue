@@ -2,6 +2,9 @@
 import DarkMode from './components/icons/DarkMode.vue';
 import LightMode from './components/icons/LightMode.vue';
 import { RouterLink, RouterView } from 'vue-router'
+
+const changeTheme = (e) => document.body.className = e.target.value
+
 </script>
 
 <template>
@@ -19,23 +22,20 @@ import { RouterLink, RouterView } from 'vue-router'
       <!-- <div class="indicator"></div> -->
       <div class="side">
         <label for="light">
-          <input type="radio" name="theme-mode" id="light" value="light" checked>
+          <input type="radio" name="theme-mode" id="light" value="light" @change="changeTheme" checked>
           <LightMode class="svg"/>
         </label>
       </div>
       <div class="side">
         <label for="dark">
-          <input type="radio" name="theme-mode" id="dark" value="dark">
+          <input type="radio" name="theme-mode" id="dark" value="dark" @change="changeTheme">
           <DarkMode class="svg"/>
         </label>
       </div>
-
-
     </div>
     <!-- <input type="text" class="search-field" placeholder="Buscar personaje"> -->
   </header>
   <RouterView />
-
 </template>
 
 <style scoped>
@@ -60,7 +60,7 @@ header{
 }
 
 nav a {
-  color: white;
+  color: var(--text-color);
   line-height: 1.5em;
   letter-spacing: 0.2px;
   margin-left: 1em;
@@ -70,7 +70,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #D9B346;
+  color: var(--action-color);
 }
 
 nav a.router-link-exact-active:hover {
@@ -82,7 +82,7 @@ nav a.router-link-exact-active:hover {
   height: 36px;
   width: 150px;
   background-color: transparent;
-  border: 1px solid white;
+  border: 1px solid var(--text-color);
   outline: none;
   justify-content: space-between;
   align-items: center;
@@ -107,17 +107,8 @@ label {
   cursor: pointer;
 }
 
-/* .indicator {
-  height: 50px;
-  width: 103px;
-  background-color: #D9B346;
-  position: absolute;
-  left: 0;
-  z-index: 1;
-  } */
-
 .side:has(input[type="radio"]:checked) {
-  background-color: #D9B346;
+  background-color: var(--action-color);
 }
 
 input[type="radio"] {
@@ -131,7 +122,7 @@ svg {
   position: absolute;
   height: 90%;
   width: 90%;
-  fill: #D9B346;
+  fill: var(--action-color);
   transition: 0.5s;
   left: 0;
   right: 0;
@@ -141,7 +132,7 @@ svg {
 }
 
 input[type="radio"]:checked + svg {
-  fill: white;
+  fill: var(--text-color);
 }
 
 .search-field {
@@ -169,7 +160,4 @@ input::placeholder {
   color: white;
 }
 
-.theme changer{
-
-}
 </style>

@@ -58,7 +58,7 @@
   }
 
   h2 {
-    color: #D9B346;
+    color: var(--action-color);
     text-align: left;
     font-weight: bolder;
     font-size: 4em;
@@ -67,7 +67,6 @@
   }
 
   h3 {
-    color: white;
     text-align: left;
     font-size: 3em;
     line-height: 1.2;
@@ -77,7 +76,7 @@
   h4 {
     font-size: 2em;
     font-weight: bolder;
-    color: #D9B346;
+    color: var(--action-color);
     font-family: mulish-extrabold;
     text-align: center;
   }

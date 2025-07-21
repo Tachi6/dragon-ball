@@ -6,18 +6,18 @@
     <div class="card-background"></div>
     <img src="https://dragonball-api.com/characters/goku_normal.webp" alt="goku" class="card-img">
     <div class="card-text">
-      <h3>GOKU</h3>
-      <p>Attack: 522650</p>
-      <p>Defense: 522650</p>
+      <h2>GOKU</h2>
+      <p>Ataque: 522650</p>
+      <p>Defensa: 522650</p>
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
   .card-container {
     width: 260px;
     aspect-ratio: 5/7;
-    border: 4px solid #D9B346;
+    border: 4px solid var(--action-color);
     border-radius: 0.5em;
     position: relative;
     padding: 30px;
@@ -63,6 +63,16 @@
     margin-right: auto;
     margin-bottom: 10px;
   }
+
+  h2 {
+    color: var(--action-color);
+    text-align: center;
+    font-weight: bolder;
+    font-size: 2em;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+  }
+
 
   h3 {
     text-align: center;

@@ -12,7 +12,9 @@
 }
 
 body {
-  background-color: #181818;
+  /* background-color: #181818; */
+  /* background-color: var(--bg-color);
+  color: var(--text-color); */
 }
 
 #app {
@@ -20,8 +22,15 @@ body {
   max-width: 1280px;
   padding: 0 20px;
   font-family: graphik-medium;
-  color: white;
 }
+
+/* main {
+  margin: auto;
+  max-width: 1280px;
+  height: 100vh;
+  padding: 0 20px;
+  font-family: graphik-medium;
+} */
 
 @media (min-width: 1024px) {
   body {
