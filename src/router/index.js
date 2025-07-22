@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('../views/CharactersView.vue'),
     },
     {
+      path: '/battle',
+      name: 'battle',
+      component: () => import('../views/BattleView.vue'),
+    },
+    {
       path: '/details/:id',
       name: 'details',
       props: true,

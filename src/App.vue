@@ -12,8 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/characters">Personajes</RouterLink>
-        <RouterLink to="#">Batalla</RouterLink>
-        <RouterLink to="#">About</RouterLink>
+        <RouterLink to="/battle">Batalla</RouterLink>
       </nav>
     </div>
     <ThemeChanger />
@@ -25,12 +24,12 @@ import { RouterLink, RouterView } from 'vue-router'
 <style scoped>
 
 header{
-  padding: 1.25em 0;
+  padding: 20px 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1.5em
+  gap: 20px;
 }
 
 .img-logo {
@@ -44,13 +43,15 @@ header{
 }
 
 nav a {
-  color: var(--text-color);
-  line-height: 1.5em;
+  font-size: 16px;
+  line-height: 24px;
   letter-spacing: 0.2px;
-  margin-left: 1em;
-  margin-right: 1em;
+  font-family: graphik-medium;
+  color: var(--text-color);
+  margin-left: 16px;
+  margin-right: 16px;
   text-decoration: none;
-  transition: 0.4s;
+  transition: 0.25s;
 }
 
 nav a.router-link-exact-active {

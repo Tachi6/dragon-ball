@@ -7,6 +7,16 @@
 }
 
 @font-face {
+  font-family: graphik-regular;
+  src: url(./fonts/Graphik-Regular.ttf);
+}
+
+@font-face {
+  font-family: graphik-light;
+  src: url(./fonts/Graphik-Light.ttf);
+}
+
+@font-face {
   font-family: graphik-medium;
   src: url(./fonts/Graphik-Medium.ttf);
 }
@@ -20,13 +30,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: graphik-regular;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: 0.5s;
-  font-family: graphik-medium;
 }
 
 body.light {

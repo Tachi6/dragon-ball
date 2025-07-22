@@ -35,12 +35,12 @@ const changeTransformationView = (transformation) => {
       <p class="description">{{ character.description }}</p>
       <div class="specs">
         <div>
-          <h4>{{ character.ki }}</h4>
-          <p class="label">Ataque</p>
+          <h4 class="number">{{ character.ki }}</h4>
+          <p class="label">Ki</p>
         </div>
         <div>
-          <h4>{{ character.ki }}</h4>
-          <p class="label">Defensa</p>
+          <h4 class="number">{{ character.ki }}</h4>
+          <p class="label">MaxKi</p>
         </div>
       </div>
       <h3 class="center" v-if="showTransformations">Transformaciones</h3>
@@ -88,42 +88,21 @@ const changeTransformationView = (transformation) => {
     transform: translateX(-45%);
   }
 
-  h2 {
-    color: var(--action-color);
-    text-align: left;
-    font-weight: bolder;
-    font-size: 4em;
-    line-height: 1.6;
-    letter-spacing: 0.2px;
-  }
-
-  h3 {
-    text-align: left;
-    font-size: 3em;
-    line-height: 1.2;
-    letter-spacing: 0.2px;
-  }
-
-  h4 {
-    font-size: 2em;
-    font-weight: bolder;
+  .number {
+    font-size: 40px;
+    line-height: 45px;
+    letter-spacing: 0.45px;
     color: var(--action-color);
     font-family: mulish-extrabold;
     text-align: center;
   }
 
-  .description {
-    font-size: 1.25em;
-    line-height: 1.5;
-    letter-spacing: 0.2px;
-    text-align: left;
-  }
-
   .label {
-    font-size: 1.25em;
-    line-height: 1.5;
+    font-size: 20px;
+    line-height: 25px;
     letter-spacing: 0.35px;
     text-align: center;
+    font-family: graphik-light;
   }
 
   .specs {
@@ -143,26 +122,15 @@ const changeTransformationView = (transformation) => {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 0.8em;
+    gap: 10px;
     justify-content: center;
   }
 
   .transformation-button {
-    border: 0;
-    background-color: var(--action-color);
-    width: 6em;
-    height: 6em;
-    cursor: pointer;
-    font-size: 1em;
-    font-family: graphik-medium;
-    line-height: 1.5;
-    letter-spacing: 0.2;
-    padding: 0.2em;
-    transition: 0.25s;
-  }
-
-  .transformation-button:hover {
-    background-color: var(--hover-color);
+    width: 95px;
+    height: 95px;
+    padding: 5px;
+    line-height: 20px;
   }
 
 </style>

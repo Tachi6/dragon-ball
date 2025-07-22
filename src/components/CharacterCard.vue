@@ -9,19 +9,19 @@ const props = defineProps(['character'])
     <div class="card-background"></div>
     <img :src="props.character.image" alt="character-image" class="card-img">
     <div class="card-text">
-      <h2>{{ props.character.name }}</h2>
-      <p>Ataque: {{ props.character.maxKi }}</p>
-      <p>Defensa: {{ props.character.maxKi }}</p>
+      <h2 class="card-h2">{{ props.character.name }}</h2>
+      <p class="card-p">Ki: {{ props.character.ki }}</p>
+      <p class="card-p">MaxKi: {{ props.character.maxKi }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
   .card-container {
-    width: 15em;
+    width: 240px;
     aspect-ratio: 5/7;
-    border: 0.25em solid var(--action-color);
-    border-radius: 0.5em;
+    border: 4px solid var(--action-color);
+    border-radius: 8px;
     position: relative;
     cursor: pointer;
   }
@@ -38,7 +38,7 @@ const props = defineProps(['character'])
     left: 0;
     right: 0;
     top: 0;
-    bottom: 5em;
+    bottom: 80px;
     margin: auto;
   }
 
@@ -49,7 +49,7 @@ const props = defineProps(['character'])
     position: absolute;
     object-fit: contain;
     z-index: 1;
-    top: 1em;
+    top: 10px;
     left: 0;
     right: 0;
     margin-left: auto;
@@ -64,21 +64,17 @@ const props = defineProps(['character'])
     right:0;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 1em;
+    margin-bottom: 10px;
   }
 
-  h2 {
-    color: var(--action-color);
+  .card-h2 {
     text-align: center;
-    font-weight: bolder;
-    font-size: 1.5em;
-    line-height: 1.2;
-    letter-spacing: 0.2px;
-    margin-bottom: 0.2em;
+    font-size: 26px;
+    line-height: 31px;
   }
 
-  p {
+  .card-p {
     text-align: center;
-    margin-bottom: 0.25em;
   }
+
 </style>

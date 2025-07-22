@@ -4,8 +4,57 @@
   margin: auto;
   max-width: 1280px;
   padding: 0 20px;
-  font-family: graphik-medium;
 }
+
+h1 {
+  text-align: center;
+  font-size: 80px;
+  line-height: 88px;
+  letter-spacing: 0.2px;
+  font-weight: bold;
+}
+
+h2 {
+  text-align: left;
+  font-size: 52px;
+  line-height: 62px;
+  letter-spacing: 0.2px;
+  font-family: graphik-medium;
+  color: var(--action-color);
+}
+
+h3 {
+  text-align: left;
+  font-size: 52px;
+  line-height: 62px;
+  letter-spacing: 0.2px;
+}
+
+p {
+  text-align: left;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+}
+
+button {
+  border: 0;
+  background-color: var(--action-color);
+  cursor: pointer;
+  font-size: 17px;
+  font-family: graphik-medium;
+  line-height: 25px;
+  letter-spacing: 0.2px;
+  transition: 0.25s;
+}
+
+button:hover {
+  background-color: var(--hover-color);
+}
+
+
+
+
 
 /* @media (min-width: 1024px) {
 } */

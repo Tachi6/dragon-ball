@@ -45,14 +45,14 @@ onMounted( async () => {
   <main>
     <div class="pagination-search">
       <button class="arrow-container" v-if="isFirstPage" @click="prevPage">
-        <ArrowBack class="arrow-back"/>
+        <ArrowBack />
       </button>
-      <div class="placeholder" v-else></div>
+      <button class="placeholder" v-else disabled></button>
       <input type="text" class="search-field" placeholder="Buscar personaje" v-model="searchString">
       <button class="arrow-container" v-if="isLastPage" @click="nextPage">
-        <ArrowForward class="arrow-forward" />
+        <ArrowForward />
       </button>
-      <div class="placeholder" v-else></div>
+      <button class="placeholder" v-else disabled></button>
     </div>
     <div class="wrapper">
       <CharacterCard v-for="character in charactersList" :key="character.id" :character="character" />
@@ -72,38 +72,32 @@ onMounted( async () => {
 }
 
 .arrow-container {
-  height: 4em;
-  width: 4em;
-  cursor: pointer;
-  border: 0;
-  background-color: var(--action-color);
-  padding: 0.5em 0;
-  transition: 0.25s;
-}
-
-.arrow-container:hover {
-  background-color: var(--hover-color);
+  height: 52px;
+  width: 52px;
 }
 
 svg {
   fill: var(--text-color);
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .placeholder {
-  height: 4em;
-  width: 4em;
+  height: 52px;
+  width: 52px;
+  background-color: transparent;
 }
 
 .search-field {
   height: 52px;
-  width: 208px;
-  padding: 0 2em;
+  width: 220px;
+  padding: 0 36px;
   background-color: transparent;
   border: 1px solid var(--text-color);
   outline: none;
   font-size: 17px;
+  font-family: graphik-medium;
   line-height: 25px;
   letter-spacing: 0.2px;
   color: var(--text-color);

@@ -60,7 +60,7 @@ onMounted(() => {
   height: 36px;
   width: 150px;
   background-color: transparent;
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--action-color);
   outline: none;
   justify-content: space-between;
   align-items: center;
@@ -69,7 +69,7 @@ onMounted(() => {
 }
 
 .side {
-  width: calc(100% / 3);
+  width: 49px;
   height: 100%;
   transition: 0.5s;
 }
