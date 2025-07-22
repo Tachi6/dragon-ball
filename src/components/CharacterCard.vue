@@ -7,7 +7,7 @@ const props = defineProps(['character'])
 <template>
   <div class="card-container" @click="$router.push({name: 'details', params: {id: props.character.id}})">
     <div class="card-background"></div>
-    <img :src="props.character.image" alt="goku" class="card-img">
+    <img :src="props.character.image" alt="character-image" class="card-img">
     <div class="card-text">
       <h2>{{ props.character.name }}</h2>
       <p>Ataque: {{ props.character.maxKi }}</p>
@@ -24,6 +24,7 @@ const props = defineProps(['character'])
     border-radius: 0.5em;
     position: relative;
     padding: 1.5em;
+    cursor: pointer;
   }
 
   .card-background {
@@ -60,6 +61,7 @@ const props = defineProps(['character'])
   .card-text {
     width: 100%;
     position: absolute;
+    z-index: 2;
     bottom: 0;
     right:0;
     margin-left: auto;
@@ -72,8 +74,9 @@ const props = defineProps(['character'])
     text-align: center;
     font-weight: bolder;
     font-size: 1.5em;
-    line-height: 1.6;
+    line-height: 1.2;
     letter-spacing: 0.2px;
+    margin-bottom: 0.2em;
   }
 
   p {

@@ -11,7 +11,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="#">Personajes</RouterLink>
+        <RouterLink to="/characters">Personajes</RouterLink>
         <RouterLink to="#">Batalla</RouterLink>
         <RouterLink to="#">About</RouterLink>
       </nav>
@@ -19,6 +19,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <ThemeChanger />
   </header>
   <RouterView />
+  <div class="bottom-margin"></div>
 </template>
 
 <style scoped>
@@ -58,6 +59,10 @@ nav a.router-link-exact-active {
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
+}
+
+.bottom-margin {
+  height: 60px;
 }
 
 /* .search-field {

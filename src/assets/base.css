@@ -3,6 +3,7 @@
   --bg-color: #f8f8f8;
   --text-color: #222222;
   --action-color: #B8902C;
+  --hover-color: #80641e;
 }
 
 @font-face {
@@ -41,10 +42,12 @@ body.light {
   --bg-color: #f8f8f8;
   --text-color: #222222;
   --action-color: #B8902C;
+  --hover-color: #a58127;
 }
 
 body.dark {
   --bg-color: #222222;
   --text-color: #f8f8f8;
   --action-color: #d9b346;
+  --hover-color: #d4a92e;
 }

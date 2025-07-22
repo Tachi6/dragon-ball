@@ -56,6 +56,10 @@ label {
   cursor: pointer;
 }
 
+label:hover {
+  background-color: rgba(0, 0, 0, 0.100);
+}
+
 .side:has(input[type="radio"]:checked) {
   background-color: var(--action-color);
 }

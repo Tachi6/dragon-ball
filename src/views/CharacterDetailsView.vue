@@ -5,20 +5,29 @@ import {obtainCharacterInfo} from '@/services/dragon_ball_services';
 
 const props = defineProps(['id'])
 const character = ref({})
-const transformations = ref(0)
+const transformations = ref([])
+const planet = ref('')
 
 onMounted(async () => {
   character.value = await obtainCharacterInfo(props.id)
-  transformations.value = character.value.transformations.length;
+
+  transformations.value = character.value.transformations
+
+  planet.value = character.value.originPlanet.name
 })
+
+const changeTransformationView = (transformation) => {
+  character.value.ki = transformation.ki
+  character.value.image = transformation.image
+}
 
 </script>
 
 <template>
   <div class="character-details">
     <div class="details-text">
-      <h2>{{ character.name }}</h2>
-      <h3>{{ character.race }} - {{ character.gender }}</h3>
+      <h2>{{ character.characterName }}</h2>
+      <h3>Planeta {{ character.originPlanet }} - Raza {{ character.race }}</h3>
       <p class="description">{{ character.description }}</p>
       <div class="specs">
         <div>
@@ -26,17 +35,19 @@ onMounted(async () => {
           <p class="label">Ataque</p>
         </div>
         <div>
-          <h4>{{ transformations }}</h4>
-          <p class="label">Transformaciones</p>
-        </div>
-        <div>
           <h4>{{ character.ki }}</h4>
           <p class="label">Defensa</p>
         </div>
       </div>
+      <h3 class="center">Transformaciones</h3>
+      <div class="transformations">
+        <button class="transformation-button" v-for="(transformation, index) in transformations" :key="index" @click="changeTransformationView(transformation)">
+          {{ transformation.name }}
+        </button>
+      </div>
     </div>
     <div class="details-image">
-      <img :src="character.image" alt="goku" class="character-image">
+      <img :src="character.image" alt="character-image" class="character-image">
     </div>
   </div>
 </template>
@@ -63,10 +74,14 @@ onMounted(async () => {
   .details-image {
     height: 75vh;
     width: 30%;
+    position: relative;
   }
 
   .character-image {
     height: 100%;
+    position: absolute;
+    margin-left: 50%;
+    transform: translateX(-45%);
   }
 
   h2 {
@@ -110,9 +125,40 @@ onMounted(async () => {
   .specs {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 30px;
     padding: 0 30px;
+  }
+
+  .center {
+    text-align: center;
+    padding: 1em 0 0.25em 0;
+  }
+
+  .transformations {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.8em;
+    justify-content: center;
+  }
+
+  .transformation-button {
+    border: 0;
+    background-color: var(--action-color);
+    width: 6em;
+    height: 6em;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: graphik-medium;
+    line-height: 1.5;
+    letter-spacing: 0.2;
+    padding: 0.2em;
+    transition: 0.25s;
+  }
+
+  .transformation-button:hover {
+    background-color: var(--hover-color);
   }
 
 </style>
