@@ -18,12 +18,11 @@ const props = defineProps(['character'])
 
 <style scoped>
   .card-container {
-    width: 12.5em;
+    width: 15em;
     aspect-ratio: 5/7;
     border: 0.25em solid var(--action-color);
     border-radius: 0.5em;
     position: relative;
-    padding: 1.5em;
     cursor: pointer;
   }
 
@@ -43,15 +42,14 @@ const props = defineProps(['character'])
     margin: auto;
   }
 
-
   .card-img {
-    height: 63%;
+    height: 66%;
     margin: auto;
     display: block;
     position: absolute;
     object-fit: contain;
     z-index: 1;
-    top: 0.6em;
+    top: 1em;
     left: 0;
     right: 0;
     margin-left: auto;
@@ -66,7 +64,7 @@ const props = defineProps(['character'])
     right:0;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0.6em;
+    margin-bottom: 1em;
   }
 
   h2 {

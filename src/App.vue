@@ -62,32 +62,7 @@ nav a.router-link-exact-active:hover {
 }
 
 .bottom-margin {
-  height: 60px;
+  height: 30px;
 }
-
-/* .search-field {
-  height: 52px;
-  width: 208px;
-  padding: 0 2em;
-  background-color: transparent;
-  border: 1px solid white;
-  outline: none;
-}
-
-.search-field {
-  font-size: 17px;
-  line-height: 25px;
-  letter-spacing: 0.2px;
-  color: white;
-}
-
-.search-field:focus {
-  border-color: #D9B346;
-  color: #D9B346;
-
-}
-input::placeholder {
-  color: white;
-} */
 
 </style>

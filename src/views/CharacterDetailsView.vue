@@ -1,12 +1,16 @@
 <script setup>
 
-import { onMounted, ref } from 'vue'
+import {ref, onMounted, computed } from 'vue'
 import {obtainCharacterInfo} from '@/services/dragon_ball_services';
 
 const props = defineProps(['id'])
 const character = ref({})
 const transformations = ref([])
 const planet = ref('')
+
+const showTransformations = computed(() => {
+  return transformations.value.length > 1
+})
 
 onMounted(async () => {
   character.value = await obtainCharacterInfo(props.id)
@@ -39,8 +43,8 @@ const changeTransformationView = (transformation) => {
           <p class="label">Defensa</p>
         </div>
       </div>
-      <h3 class="center">Transformaciones</h3>
-      <div class="transformations">
+      <h3 class="center" v-if="showTransformations">Transformaciones</h3>
+      <div class="transformations" v-if="showTransformations">
         <button class="transformation-button" v-for="(transformation, index) in transformations" :key="index" @click="changeTransformationView(transformation)">
           {{ transformation.name }}
         </button>

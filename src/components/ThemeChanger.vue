@@ -2,8 +2,31 @@
 
 import DarkMode from './icons/DarkMode.vue';
 import LightMode from './icons/LightMode.vue';
+import AutoMode from './icons/AutoMode.vue';
+import {ref, onMounted, watch} from 'vue'
 
-const changeTheme = (e) => document.body.className = e.target.value
+const isSystemThemeDark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
+const themeMode = ref(localStorage.getItem('themeMode'))
+
+watch(themeMode, () => {
+  if (themeMode.value === 'auto') {
+    themeMode.value = isSystemThemeDark.value ? 'dark' : 'light'
+  }
+  document.body.className = themeMode.value
+})
+
+const changeTheme = (e) => {
+  themeMode.value = e.target.value
+  localStorage.setItem('themeMode', e.target.value)
+}
+
+onMounted(() => {
+  document.querySelector(`input#${themeMode.value}`).checked = true
+  if (themeMode.value === 'auto') {
+    themeMode.value = isSystemThemeDark.value ? 'dark' : 'light'
+  }
+  document.body.className = themeMode.value
+})
 
 </script>
 
@@ -13,6 +36,12 @@ const changeTheme = (e) => document.body.className = e.target.value
       <label for="light">
         <input type="radio" name="theme-mode" id="light" value="light" @change="changeTheme" checked>
         <LightMode class="svg"/>
+      </label>
+    </div>
+    <div class="side">
+      <label for="auto">
+        <input type="radio" name="theme-mode" id="auto" value="auto" @change="changeTheme" checked>
+        <AutoMode class="svg"/>
       </label>
     </div>
     <div class="side">
@@ -40,7 +69,7 @@ const changeTheme = (e) => document.body.className = e.target.value
 }
 
 .side {
-  width: 50%;
+  width: calc(100% / 3);
   height: 100%;
   transition: 0.5s;
 }
