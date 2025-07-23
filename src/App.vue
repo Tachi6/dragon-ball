@@ -8,14 +8,12 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <header>
     <img class="img-logo" alt="Dragon Ball Z logo" src="./assets/img/dragon-ball-z-logo.svg">
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Inicio</RouterLink>
-        <RouterLink to="/characters">Personajes</RouterLink>
-        <RouterLink to="/battle">Batalla</RouterLink>
-      </nav>
-    </div>
-    <ThemeChanger />
+    <nav>
+      <RouterLink to="/">Inicio</RouterLink>
+      <RouterLink to="/characters">Personajes</RouterLink>
+      <RouterLink to="/battle">Batalla</RouterLink>
+    </nav>
+    <ThemeChanger class="fix-position"/>
   </header>
   <RouterView />
   <div class="bottom-margin"></div>
@@ -28,8 +26,20 @@ header{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 20px;
+  position: relative;
+}
+
+.fix-position {
+  position: absolute;
+  right: -10px;
+  top: 12px;
+}
+
+.wrapper {
+  width: 1px;
+  flex: 1;
 }
 
 .img-logo {
@@ -37,9 +47,8 @@ header{
   width: auto;
 }
 
-.wrapper {
-  justify-self: center;
-  margin: auto;
+nav {
+  padding: 0 20px;
 }
 
 nav a {
@@ -64,6 +73,12 @@ nav a.router-link-exact-active:hover {
 
 .bottom-margin {
   height: 30px;
+}
+
+@media (width <= 675px) {
+  header {
+    justify-content: center;
+  }
 }
 
 </style>

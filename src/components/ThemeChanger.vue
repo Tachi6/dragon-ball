@@ -57,21 +57,21 @@ onMounted(() => {
 
 .theme-changer{
   display: flex;
-  height: 36px;
-  width: 150px;
+  height: 80px;
+  width: 26px;
   background-color: transparent;
   border: 1px solid var(--action-color);
   outline: none;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .side {
-  width: 49px;
-  height: 100%;
-  transition: 0.5s;
+  width: 100%;
+  height: 26px;
+  transition: 0.25s;
 }
 
 label {
@@ -102,8 +102,8 @@ input[type="radio"] {
 
 svg {
   position: absolute;
-  height: 90%;
-  width: 90%;
+  height: 85%;
+  width: 85%;
   fill: var(--action-color);
   transition: 0.5s;
   left: 0;
