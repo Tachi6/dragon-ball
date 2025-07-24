@@ -10,8 +10,14 @@ const props = defineProps(['character'])
     <img :src="props.character.image" alt="character-image" class="card-img">
     <div class="card-text">
       <h2 class="card-h2">{{ props.character.name }}</h2>
-      <p class="card-p">Ki: {{ props.character.ki }}</p>
-      <p class="card-p">MaxKi: {{ props.character.maxKi }}</p>
+      <div class="specs">
+        <h4 class="number">{{ props.character.ki }}</h4>
+        <p class="label">Ki</p>
+      </div>
+      <div class="specs">
+        <h4 class="number">{{ props.character.maxKi }}</h4>
+        <p class="label">MaxKi</p>
+      </div>
     </div>
   </div>
 </template>
@@ -43,7 +49,7 @@ const props = defineProps(['character'])
   }
 
   .card-img {
-    height: 66%;
+    height: 68%;
     margin: auto;
     display: block;
     position: absolute;
@@ -69,11 +75,28 @@ const props = defineProps(['character'])
 
   .card-h2 {
     text-align: center;
-    font-size: 1.25em;
+    font-size: 1.5em;
   }
 
-  .card-p {
-    text-align: center;
+  .specs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .number {
+    font-size: 1em;
+    letter-spacing: 0.45px;
+    color: var(--action-color);
+    font-family: mulish-extrabold;
+  }
+
+  .label {
+    letter-spacing: 0.35px;
+    font-family: graphik-light;
   }
 
 </style>
