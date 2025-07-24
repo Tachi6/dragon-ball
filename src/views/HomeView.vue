@@ -4,10 +4,8 @@
 
 <template>
   <main>
-    <div class="wrapper">
-      <h1 class="margin-bottom">Personajes de <em>Dragon Ball Z</em> </h1>
-      <p class="home-text">Descubre los personajes de Dragon Ball Z, con todas sus transformaciones, y  compite con ellos en batallas de cartas.</p>
-    </div>
+    <h1 class="margin-bottom">Personajes<br/><em>Dragon Ball Z</em></h1>
+    <p class="home-text">Descubre los personajes de Dragon Ball Z con todas sus transformaciones. Compite con ellos en nuestro apartado de batallas de cartas.</p>
     <img src="../assets/img/dragon-ball-4-stars.png" alt="ball-4stars" class="img-ball">
   </main>
 </template>
@@ -15,14 +13,11 @@
 <style scoped>
 
 main {
-  width: 100%;
+  max-width: 768px;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-.wrapper {
-  padding: 30px 300px;
+  align-items: center;
 }
 
 .margin-bottom {
@@ -30,16 +25,18 @@ main {
 }
 
 em {
+  font-size: 100%;
+  line-height: 1.2;
   color: var(--action-color);
 }
 
 .home-text {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .img-ball {
-  height: 400px;
-  margin: auto;
+  width: 60%;
 }
+
 </style>

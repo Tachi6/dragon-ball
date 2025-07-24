@@ -29,10 +29,11 @@ const changeTransformationView = (transformation) => {
 
 <template>
   <div class="character-details">
+    <div class="z-background"></div>
     <div class="details-text">
       <h2>{{ character.characterName }}</h2>
       <h3>Planeta {{ character.originPlanet }} - Raza {{ character.race }}</h3>
-      <p class="description">{{ character.description }}</p>
+      <p>{{ character.description }}</p>
       <div class="specs">
         <div>
           <h4 class="number">{{ character.ki }}</h4>
@@ -44,15 +45,15 @@ const changeTransformationView = (transformation) => {
         </div>
       </div>
       <h3 class="center" v-if="showTransformations">Transformaciones</h3>
-      <div class="transformations" v-if="showTransformations">
-        <button class="transformation-button" v-for="(transformation, index) in transformations" :key="index" @click="changeTransformationView(transformation)">
-          {{ transformation.name }}
-        </button>
-      </div>
     </div>
     <div class="details-image">
       <img :src="character.image" alt="character-image" class="character-image">
     </div>
+  </div>
+  <div class="transformations" v-if="showTransformations">
+    <button class="transformation-button" v-for="(transformation, index) in transformations" :key="index" @click="changeTransformationView(transformation)">
+      {{ transformation.name }}
+    </button>
   </div>
 </template>
 
@@ -65,9 +66,17 @@ const changeTransformationView = (transformation) => {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 30px;
+    position: relative;
+  }
+
+  .z-background {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    position: absolute;
     background: url(../assets/img/z.svg);
     background-repeat: no-repeat;
-    background-size: 70%;
+    background-size: clamp(240px, 80vw, 800px);
     background-position-x: right;
   }
 
@@ -76,7 +85,7 @@ const changeTransformationView = (transformation) => {
   }
 
   .details-image {
-    height: 75vh;
+    height: 70vh;
     width: 30%;
     position: relative;
   }
@@ -89,7 +98,7 @@ const changeTransformationView = (transformation) => {
   }
 
   .number {
-    font-size: 40px;
+    font-size: clamp(32px, 5vw, 40px);
     line-height: 45px;
     letter-spacing: 0.45px;
     color: var(--action-color);
@@ -98,8 +107,6 @@ const changeTransformationView = (transformation) => {
   }
 
   .label {
-    font-size: 20px;
-    line-height: 25px;
     letter-spacing: 0.35px;
     text-align: center;
     font-family: graphik-light;

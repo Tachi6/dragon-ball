@@ -69,8 +69,7 @@ const props = defineProps(['character'])
 
   .card-h2 {
     text-align: center;
-    font-size: 26px;
-    line-height: 31px;
+    font-size: 1.25em;
   }
 
   .card-p {

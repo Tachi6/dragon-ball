@@ -52,9 +52,6 @@ nav {
 }
 
 nav a {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.2px;
   font-family: graphik-medium;
   color: var(--text-color);
   margin-left: 16px;

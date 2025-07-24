@@ -48,7 +48,7 @@ onMounted( async () => {
         <ArrowBack />
       </button>
       <button class="placeholder" v-else disabled></button>
-      <input type="text" class="search-field" placeholder="Buscar personaje" v-model="searchString">
+      <input type="text" class="search-field" placeholder="Buscar" v-model="searchString">
       <button class="arrow-container" v-if="isLastPage" @click="nextPage">
         <ArrowForward />
       </button>
@@ -65,10 +65,18 @@ onMounted( async () => {
 .wrapper {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat( auto-fit, 15em);
+  grid-template-columns: repeat(auto-fit, 240px);
   justify-content: center;
-  gap: 2em;
-  margin-top: 2em;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.pagination-search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .arrow-container {
@@ -91,24 +99,17 @@ svg {
 
 .search-field {
   height: 52px;
-  width: 220px;
-  padding: 0 36px;
+  min-width: 80px;
+  width: 25vw;
+  max-width: 200px;
+  flex: 1;
+  margin: 0 10px;
+  text-align: center;
   background-color: transparent;
   border: 1px solid var(--text-color);
   outline: none;
-  font-size: 17px;
   font-family: graphik-medium;
-  line-height: 25px;
-  letter-spacing: 0.2px;
   color: var(--text-color);
-}
-
-.pagination-search {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .search-field:focus {
@@ -118,6 +119,7 @@ svg {
 
 input::placeholder {
   color: var(--text-color);
+  text-align: center;
 }
 
 </style>
