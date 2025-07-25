@@ -1,23 +1,47 @@
 <script setup>
+import { useRouter } from 'vue-router'
+import {onMounted} from 'vue';
 
-const props = defineProps(['character'])
+const router = useRouter()
+
+const props = defineProps(['character','backCard'])
+
+onMounted(() => {
+  console.log(props.backCard);
+
+  if (props.backCard) {
+    document.querySelectorAll('.specs').forEach((element) => element.classList.add('hidden'))
+    document.querySelectorAll('.image-container').forEach((element) => element.classList.remove('hidden'))
+  }
+})
+
+const openDetails = () => {
+  if (!props.backCard) {
+    router.push({name: 'details', params: {id: props.character.id}})
+  }
+}
 
 </script>
 
 <template>
-  <div class="card-container" @click="$router.push({name: 'details', params: {id: props.character.id}})">
+  <div class="card-container" @click="openDetails">
     <div class="card-background"></div>
-    <img :src="props.character.image" alt="character-image" class="card-img">
-    <div class="card-text">
-      <h2 class="card-h2">{{ props.character.name }}</h2>
-      <div class="specs">
-        <h4 class="number">{{ props.character.ki }}</h4>
-        <p class="label">Ki</p>
+    <div class="specs">
+      <img :src="props.character.image" alt="character-image" class="card-img">
+      <div class="card-text">
+        <h2 class="card-h2">{{ props.character.name }}</h2>
+        <div class="specs">
+          <h4 class="number">{{ props.character.ki }}</h4>
+          <p class="label">Ki</p>
+        </div>
+        <div class="specs">
+          <h4 class="number">{{ props.character.maxKi }}</h4>
+          <p class="label">MaxKi</p>
+        </div>
       </div>
-      <div class="specs">
-        <h4 class="number">{{ props.character.maxKi }}</h4>
-        <p class="label">MaxKi</p>
-      </div>
+    </div>
+    <div class="image-container hidden">
+      <img class="img-logo" alt="Dragon Ball Z logo" src="../assets/img/dragon-ball-z-logo.svg">
     </div>
   </div>
 </template>
@@ -27,6 +51,7 @@ const props = defineProps(['character'])
     width: 240px;
     aspect-ratio: 5/7;
     border: 4px solid var(--action-color);
+    background-color: var(--bg-color);
     border-radius: 8px;
     position: relative;
     cursor: pointer;
@@ -97,6 +122,27 @@ const props = defineProps(['character'])
   .label {
     letter-spacing: 0.35px;
     font-family: graphik-light;
+  }
+
+  .image-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .img-logo {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 50px;
+    width: auto;
+    opacity: 0.5;
+  }
+
+  .hidden {
+    display: none;
   }
 
 </style>
