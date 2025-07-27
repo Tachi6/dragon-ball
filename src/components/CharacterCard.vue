@@ -10,7 +10,7 @@ onMounted(() => {
   console.log(props.backCard);
 
   if (props.backCard) {
-    document.querySelectorAll('.specs').forEach((element) => element.classList.add('hidden'))
+    document.querySelectorAll('.text-container').forEach((element) => element.classList.add('hidden'))
     document.querySelectorAll('.image-container').forEach((element) => element.classList.remove('hidden'))
   }
 })
@@ -26,7 +26,7 @@ const openDetails = () => {
 <template>
   <div class="card-container" @click="openDetails">
     <div class="card-background"></div>
-    <div class="specs">
+    <div class="text-container">
       <img :src="props.character.image" alt="character-image" class="card-img">
       <div class="card-text">
         <h2 class="card-h2">{{ props.character.name }}</h2>
