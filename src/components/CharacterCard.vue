@@ -7,8 +7,6 @@ const router = useRouter()
 const props = defineProps(['character','backCard'])
 
 onMounted(() => {
-  console.log(props.backCard);
-
   if (props.backCard) {
     document.querySelectorAll('.text-container').forEach((element) => element.classList.add('hidden'))
     document.querySelectorAll('.image-container').forEach((element) => element.classList.remove('hidden'))
@@ -50,7 +48,7 @@ const openDetails = () => {
   .card-container {
     width: 240px;
     aspect-ratio: 5/7;
-    border: 4px solid var(--action-color);
+    border: 2px solid var(--action-color);
     background-color: var(--bg-color);
     border-radius: 8px;
     position: relative;

@@ -55,7 +55,7 @@ onMounted( async () => {
       <button class="placeholder" v-else disabled></button>
     </div>
     <div class="wrapper">
-      <CharacterCard v-for="character in charactersList" :key="character.id" :character="character" />
+      <CharacterCard v-for="(character, index) in charactersList" :key="`ch${index}`" :character="character" />
     </div>
   </main>
 </template>

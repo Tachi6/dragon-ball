@@ -46,7 +46,7 @@ const changeTransformationView = (transformation) => {
     </div>
     <h3 class="transformations-label" v-if="showTransformations">Transformaciones</h3>
     <div class="transformations" v-if="showTransformations">
-      <button class="transformation-button" v-for="(transformation, index) in transformations" :key="index" @click="changeTransformationView(transformation)">
+      <button class="transformation-button" v-for="(transformation, index) in transformations" :key="`t${index}`" @click="changeTransformationView(transformation)">
         {{ transformation.name }}
       </button>
     </div>
