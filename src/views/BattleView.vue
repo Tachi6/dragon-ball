@@ -17,18 +17,16 @@ const showHintText = ref(true)
 const showHandWinner = ref(false)
 
 const htmlCards = ref([])
-const cardsDescription = ref([])
-const cardImages = ref([])
-const deckContainer = ref()
-const winnerContainer = ref()
 const cardsStyles = ref([])
+const cardsDescription = ref([])
+const cardsImages = ref([])
+const winnerContainer = ref()
 
 const loadHTMLelements = () => {
   cardsDescription.value = document.querySelectorAll('.card-container .text-container')
-  cardImages.value = document.querySelectorAll('.card-container .image-container')
+  cardsImages.value = document.querySelectorAll('.card-container .image-container')
   htmlCards.value = document.querySelectorAll('.card')
   winnerContainer.value = document.querySelector('.hand-winner p')
-  deckContainer.value = document.querySelector('.game-cards')
 
   htmlCards.value.forEach((element, index) => {
     element.classList.add(`card${index}`)
@@ -51,19 +49,14 @@ onMounted(async () => {
 })
 
 
-const resetCardsPosition = () => {
-  cardsStyles.value.forEach((element, index) => {
-    element.style.right = `calc((var(--tertiaty-width) / ${cards.value.length}) * ${cards.value.length - 1 - index})`
-    element.style.top = '0'
-    element.style.zIndex = `${cards.value.length - index}`
-  })
-}
-
 const resetCardsPositionOrigin = () => {
   cardsStyles.value.forEach((element, index) => {
-    element.style.right = `${(cards.value.length - 1 - index) * 3}px`
+    element.style.right = `calc(${(cards.value.length - 1 - index) * 3}px + 50%)`
     element.style.top = '0'
     element.style.zIndex = `${cards.value.length - index}`
+    element.style.transform = 'translateX(86%)';
+    element.style.pointerEvents = 'auto';
+    element.style.cursor = 'pointer';
   })
 }
 
@@ -93,92 +86,15 @@ const obtainPlayingCards = async () => {
     if (cardInfo.transformations.length > 1) {
       cardInfo.transformations = sortElements(cardInfo.transformations)
 
-      const editedCard = {
-        id: tempCards[i].id,
-        name: cardInfo.transformations[0].name === 'Base' ? tempCards[i].name : cardInfo.transformations[0].name,
-        ki: cardInfo.transformations[0].ki,
-        maxKi: tempCards[i].maxKi,
-        race: tempCards[i].race,
-        gender: tempCards[i].gender,
-        description: tempCards[i].description,
-        image: cardInfo.transformations[0].image,
-        affiliation: tempCards[i].affiliation,
-        deletedAt: null,
-      }
-
-      tempCards[i] = editedCard
-      continue
+      tempCards[i].name = cardInfo.transformations[0].name === 'Base' ? tempCards[i].name : cardInfo.transformations[0].name
+      tempCards[i].ki = cardInfo.transformations[0].ki
+      tempCards[i].image = cardInfo.transformations[0].image
     }
-
-    const editedCard = {
-      id: tempCards[i].id,
-      name: tempCards[i].name,
-      ki: Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi,
-      maxKi: tempCards[i].maxKi,
-      race: tempCards[i].race,
-      gender: tempCards[i].gender,
-      description: tempCards[i].description,
-      image: tempCards[i].image,
-      affiliation: tempCards[i].affiliation,
-      deletedAt: null,
+    else {
+      tempCards[i].ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
     }
-
-    tempCards[i] = editedCard
   }
-
   playCards.value = tempCards
-}
-
-
-const sortPlayingCards = async () => {
-  const tempCards = sortElements(cards.value)
-
-  for (let i = 0; i < tempCards.length; i++) {
-    if (tempCards[i].ki === tempCards[i].maxKi) {
-      playCards.value[i].id = tempCards[i].id
-      playCards.value[i].name = tempCards[i].name,
-      playCards.value[i].ki = tempCards[i].ki
-      playCards.value[i].maxKi = tempCards[i].maxKi
-      playCards.value[i].race = tempCards[i].race
-      playCards.value[i].gender = tempCards[i].gender
-      playCards.value[i].description = tempCards[i].description
-      playCards.value[i].image = tempCards[i].image
-      playCards.value[i].affiliation = tempCards[i].affiliation
-      playCards.value[i].deletedAt = null
-
-      continue
-    }
-
-    const cardInfo = await obtainCharacterInfo(tempCards[i].id)
-
-    if (cardInfo.transformations.length > 1) {
-      cardInfo.transformations = sortElements(cardInfo.transformations)
-
-      playCards.value[i].id = tempCards[i].id
-      playCards.value[i].name = cardInfo.transformations[0].name === 'Base' ? tempCards[i].name : cardInfo.transformations[0].name
-      playCards.value[i].ki = cardInfo.transformations[0].ki
-      playCards.value[i].maxKi = tempCards[i].maxKi
-      playCards.value[i].race = tempCards[i].race
-      playCards.value[i].gender = tempCards[i].gender
-      playCards.value[i].description = tempCards[i].description
-      playCards.value[i].image = cardInfo.transformations[0].image
-      playCards.value[i].affiliation = tempCards[i].affiliation
-      playCards.value[i].deletedAt = null
-
-      continue
-    }
-
-    playCards.value[i].id = tempCards[i].id
-    playCards.value[i].name = tempCards[i].name
-    playCards.value[i].ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
-    playCards.value[i].maxKi = tempCards[i].maxKi
-    playCards.value[i].race = tempCards[i].race
-    playCards.value[i].gender = tempCards[i].gender
-    playCards.value[i].description = tempCards[i].description
-    playCards.value[i].image = tempCards[i].image
-    playCards.value[i].affiliation = tempCards[i].affiliation
-    playCards.value[i].deletedAt = null
-  }
 }
 
 const selectCard = () => playCards.value[gameCard.value]
@@ -187,23 +103,30 @@ const nextCard = () => {
   if (gameCard.value === cards.value.length) return
 
   if (gameCard.value !== 0) {
-    htmlCards.value[gameCard.value - 2].style.zIndex = 0
-    htmlCards.value[gameCard.value - 1].style.zIndex = 0
+    cardsStyles.value[gameCard.value - 1].style.zIndex = 0
+    cardsStyles.value[gameCard.value - 2].style.zIndex = 0
   }
 
-  cardsStyles.value[gameCard.value].style.right = `calc(100% - ${240 + (gameCard.value * 2)}px)`
-  cardsStyles.value[gameCard.value].style.top = 'calc(100% - 336px)'
-  flipCards(gameCard.value)
+  moveCards()
   playerCard.value = selectCard()
   gameCard.value++
 
-  htmlCards.value[gameCard.value].style.right = `${(gameCard.value - 1) * 2}px`
-  htmlCards.value[gameCard.value].style.top = 'calc(100% - 336px)'
-  flipCards(gameCard.value)
+  moveCards()
   computerCard.value = selectCard()
   gameCard.value++
 
   comparePoints(playerCard.value.ki, computerCard.value.ki)
+}
+
+const moveCards = () => {
+  cardsStyles.value[gameCard.value].style.transform = 'translate(0)'
+  cardsStyles.value[gameCard.value].style.right = gameCard.value % 2 === 0
+  ? `${(gameCard.value - 1) * 1.5}px`
+  : `calc(100% - ${240 + (gameCard.value * 1.5)}px)`
+  cardsStyles.value[gameCard.value].style.top = 'calc(100% - 336px)'
+  cardsStyles.value[gameCard.value].style.pointerEvents = 'none';
+  cardsStyles.value[gameCard.value].style.cursor = 'default';
+  flipCards(gameCard.value)
 }
 
 const comparePoints = (playerKi, computerKi) => {
@@ -241,9 +164,6 @@ const comparePoints = (playerKi, computerKi) => {
     computerKi = parseInt(computerKi)
   }
 
-  console.log(playerKi);
-  console.log(computerKi);
-
   if (playerKi > computerKi) {
     playerPoints.value++
     if (gameCard.value <= cards.value.length - 2) {
@@ -269,11 +189,7 @@ watch(gameCard, () => {
     winnerContainer.value.style.opacity = '1'
   }
 
-  if (gameCard.value !== 10) {
-    deckContainer.value.style.width = `calc(((var(--tertiaty-width) / ${playCards.value.length}) * ${9 - gameCard.value}) + 240px)`
-  }
-
-  if (gameCard.value === playCards.value.length && gameCard.value !== 0) {
+  if (gameCard.value === cards.value.length && gameCard.value !== 0) {
     if (playerPoints.value > computerPoints.value) {
       boxText.value = 'Jugador gana la partida'
     }
@@ -285,14 +201,12 @@ watch(gameCard, () => {
     }
 
     showNewGameButton.value = true
-
-    deckContainer.value.style.width = '0'
   }
 })
 
 const flipCards = (card) => {
   if (card !== undefined) {
-    cardImages.value[card].classList.add('hidden')
+    cardsImages.value[card].classList.add('hidden')
     cardsDescription.value[card].classList.remove('hidden')
   }
   else {
@@ -317,10 +231,9 @@ const newGame = async () => {
     playerPoints.value = 0
     computerPoints.value = 0
     boxText.value = ''
-
     showNewGameButton.value = false
+
     winnerContainer.value.style.opacity = '0'
-    deckContainer.value.style.width = '100%'
   }, 500)
 }
 
@@ -332,8 +245,8 @@ const newGame = async () => {
       <div v-show="showHintText" class="hint-text-container">
         <p class="hint-text">Pulsa en <b>Nueva partida</b> para barajar las cartas y comenzar la batalla. Una vez dentro del juego, pulsa en el mazo de cartas para mostrar las primeras 2 cartas que lucharan. El jugador con mayor <b>Ki</b> de las 2 cartas mostradas se anotará el punto. Si la puntuación de ambas cartas es igual, nadie se anota puntos. Sigue pulsando en el mazo para lanzar la mano de cartas del siguiente turno. Las cartas con transformaciones o <b>Ki</b> más alto que el del base, eligen al azar el <b>Ki</b> que adquieren, siendo este y no el <b>MaxKi</b> el valor para la batalla. Al final de la partida gane el jugador que acumula más puntos.</p>
       </div>
-      <div v-show="!showHintText" class="game-cards" @click="nextCard">
-        <CharacterCard class="card" v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="`card${index}`"/>
+      <div v-show="!showHintText" class="game-cards">
+        <CharacterCard class="card" v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="`card${index}`" @click="nextCard"/>
       </div>
       <div class="scoreboard">
         <button class="points-box">Player {{ playerPoints }}</button>
@@ -366,9 +279,6 @@ const newGame = async () => {
   flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
-  --container-width: clamp(240px, (((100vw - 40px) * 80) / 100), 992px);
-  --secondary-width: calc((2400px - var(--container-width)) / 9);
-  --tertiaty-width: calc(var(--container-width) - var(--secondary-width))
 }
 
 .hint-text-container {
@@ -388,14 +298,12 @@ const newGame = async () => {
 .game-cards {
   height: 336px;
   width: 100%;
-  align-self: flex-end;
-  z-index: 11;
-  cursor: pointer;
 }
 
 .card-container {
   transition: 0.5s linear;
-  cursor: default;
+  cursor: pointer;
+  transform: translateX(86%);
 }
 
 .card {
