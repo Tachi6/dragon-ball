@@ -15,6 +15,7 @@ const boxText = ref('')
 const showNewGameButton = ref(true)
 const showHintText = ref(true)
 const showHandWinner = ref(false)
+const groupCards = ref(false)
 
 const htmlCards = ref([])
 const cardsStyles = ref([])
@@ -25,7 +26,7 @@ const winnerContainer = ref()
 const loadHTMLelements = () => {
   cardsDescription.value = document.querySelectorAll('.card-container .text-container')
   cardsImages.value = document.querySelectorAll('.card-container .image-container')
-  htmlCards.value = document.querySelectorAll('.card')
+  htmlCards.value = document.querySelectorAll('.card-container')
   winnerContainer.value = document.querySelector('.hand-winner p')
 
   htmlCards.value.forEach((element, index) => {
@@ -48,12 +49,15 @@ onMounted(async () => {
   resetCardsPositionOrigin()
 })
 
-
 const resetCardsPositionOrigin = () => {
   cardsStyles.value.forEach((element, index) => {
-    element.style.right = `calc(${(cards.value.length - 1 - index) * 3}px + 50%)`
     element.style.top = '0'
+    element.style.right = '50%'
+    setTimeout(() => {
+      element.style.right = `calc(${(cards.value.length - 1 - index) * 3}px + 50%)`
+    }, 500)
     element.style.zIndex = `${cards.value.length - index}`
+    element.classList.remove('flipUp')
     element.style.transform = 'translateX(86%)';
     element.style.pointerEvents = 'auto';
     element.style.cursor = 'pointer';
@@ -119,6 +123,7 @@ const nextCard = () => {
 }
 
 const moveCards = () => {
+  cardsStyles.value[gameCard.value].classList.add('flipUp')
   cardsStyles.value[gameCard.value].style.transform = 'translate(0)'
   cardsStyles.value[gameCard.value].style.right = gameCard.value % 2 !== 0
   ? `${(gameCard.value - 1) * 1.5}px`
@@ -206,46 +211,29 @@ watch(gameCard, () => {
 
 const flipCards = (card) => {
   if (card !== undefined) {
-    cardsImages.value[card].classList.add('hidden')
-    cardsDescription.value[card].classList.remove('hidden')
+    setTimeout(() => {
+      cardsImages.value[card].classList.add('hidden')
+      cardsDescription.value[card].classList.remove('hidden')
+    },250)
   }
   else {
-    cardsImages.value.forEach(element => element.classList.remove('hidden'))
-    cardsDescription.value.forEach(element => element.classList.add('hidden'))
+    setTimeout(() => {
+      cardsImages.value.forEach(element => element.classList.remove('hidden'))
+      cardsDescription.value.forEach(element => element.classList.add('hidden'))
+    }, 250)
   }
 }
 
-const newGame2 = async () => {
-  flipCards()
-  resetCardsPositionOrigin()
-  // if (!showHintText.value) {
-  //   flipCards()
-  //   await obtainPlayingCards()
-  //   resetCardsPositionOrigin()
-  // }
-
-  // showHintText.value = false
-
-  // setTimeout(async () => {
-  //   gameCard.value = 0
-  //   playerCard.value = undefined
-  //   computerCard.value = undefined
-  //   playerPoints.value = 0
-  //   computerPoints.value = 0
-  //   boxText.value = ''
-  //   showNewGameButton.value = false
-
-  //   winnerContainer.value.style.opacity = '0'
-  // }, 500)
-}
 const newGame = async () => {
+
   if (!showHintText.value) {
-    flipCards()
+    collectCards()
     await obtainPlayingCards()
     resetCardsPositionOrigin()
     winnerContainer.value.style.opacity = '0'
   }
-
+  // TODO: falta afinar animaciones
+  showNewGameButton.value = false
   showHintText.value = false
 
   setTimeout(async () => {
@@ -255,9 +243,19 @@ const newGame = async () => {
     playerPoints.value = 0
     computerPoints.value = 0
     boxText.value = ''
-    showNewGameButton.value = false
 
   }, 500)
+}
+
+const collectCards = () => {
+  cardsStyles.value.forEach((element, index) => element.style.right = index % 2 === 0 ? 'calc(100% - 240px)' : '0')
+  setTimeout(() => {
+    groupCards.value = true
+    flipCards()
+  }, 500)
+  setTimeout(() => {
+    groupCards.value = false
+  }, 1000)
 }
 
 </script>
@@ -269,7 +267,7 @@ const newGame = async () => {
         <p class="hint-text">Pulsa en <b>Nueva partida</b> para barajar las cartas y comenzar la batalla. Una vez dentro del juego, pulsa en el mazo de cartas para mostrar las primeras 2 cartas que lucharan. El jugador con mayor <b>Ki</b> de las 2 cartas mostradas se anotará el punto. Si la puntuación de ambas cartas es igual, nadie se anota puntos. Sigue pulsando en el mazo para lanzar la mano de cartas del siguiente turno. Las cartas con transformaciones o <b>Ki</b> más alto que el del base, eligen al azar el <b>Ki</b> que adquieren, siendo este y no el <b>MaxKi</b> el valor para la batalla. Al final de la partida gane el jugador que acumula más puntos.</p>
       </div>
       <div v-show="!showHintText" class="game-cards">
-        <CharacterCard class="card" v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="`card${index}`" @click="nextCard"/>
+        <CharacterCard v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="[{ flipDown: groupCards }, `card${index}`]" @click="nextCard"/>
       </div>
       <div class="scoreboard">
         <button class="points-box">Player {{ playerPoints }}</button>
@@ -351,13 +349,13 @@ const newGame = async () => {
   width: 100%;
 }
 
-.flip-up {
+.flipUp {
   animation-name: flip-up;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;
 }
 
-.flip-down {
+.flipDown {
   animation-name: flip-down;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;
@@ -367,9 +365,6 @@ const newGame = async () => {
   transition: 0.5s linear;
   cursor: pointer;
   transform: translateX(86%);
-}
-
-.card {
   position: absolute;
   top: 0;
   right: 0;
