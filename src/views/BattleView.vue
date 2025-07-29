@@ -120,7 +120,7 @@ const nextCard = () => {
 
 const moveCards = () => {
   cardsStyles.value[gameCard.value].style.transform = 'translate(0)'
-  cardsStyles.value[gameCard.value].style.right = gameCard.value % 2 === 0
+  cardsStyles.value[gameCard.value].style.right = gameCard.value % 2 !== 0
   ? `${(gameCard.value - 1) * 1.5}px`
   : `calc(100% - ${240 + (gameCard.value * 1.5)}px)`
   cardsStyles.value[gameCard.value].style.top = 'calc(100% - 336px)'
@@ -210,16 +210,40 @@ const flipCards = (card) => {
     cardsDescription.value[card].classList.remove('hidden')
   }
   else {
-    document.querySelectorAll('.card-container .image-container').forEach(element => element.classList.remove('hidden'))
-    document.querySelectorAll('.card-container .text-container').forEach(element => element.classList.add('hidden'))
+    cardsImages.value.forEach(element => element.classList.remove('hidden'))
+    cardsDescription.value.forEach(element => element.classList.add('hidden'))
   }
 }
 
+const newGame2 = async () => {
+  flipCards()
+  resetCardsPositionOrigin()
+  // if (!showHintText.value) {
+  //   flipCards()
+  //   await obtainPlayingCards()
+  //   resetCardsPositionOrigin()
+  // }
+
+  // showHintText.value = false
+
+  // setTimeout(async () => {
+  //   gameCard.value = 0
+  //   playerCard.value = undefined
+  //   computerCard.value = undefined
+  //   playerPoints.value = 0
+  //   computerPoints.value = 0
+  //   boxText.value = ''
+  //   showNewGameButton.value = false
+
+  //   winnerContainer.value.style.opacity = '0'
+  // }, 500)
+}
 const newGame = async () => {
   if (!showHintText.value) {
     flipCards()
     await obtainPlayingCards()
     resetCardsPositionOrigin()
+    winnerContainer.value.style.opacity = '0'
   }
 
   showHintText.value = false
@@ -233,7 +257,6 @@ const newGame = async () => {
     boxText.value = ''
     showNewGameButton.value = false
 
-    winnerContainer.value.style.opacity = '0'
   }, 500)
 }
 
@@ -265,6 +288,34 @@ const newGame = async () => {
 </template>
 
 <style scoped>
+
+@keyframes flip-up {
+  0% {
+    transform: rotateY(180deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  0% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes flip-down {
+  0% {
+    transform: rotateY(180deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  0% {
+    transform: rotateY(0deg);
+  }
+}
 
 .board {
   margin-top: 20px;
@@ -298,6 +349,18 @@ const newGame = async () => {
 .game-cards {
   height: 336px;
   width: 100%;
+}
+
+.flip-up {
+  animation-name: flip-up;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.flip-down {
+  animation-name: flip-down;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
 }
 
 .card-container {
