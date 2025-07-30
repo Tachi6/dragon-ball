@@ -18,9 +18,9 @@ export const obtainCharacters = async () => {
 export const obtainCharacterInfo = async (id) => {
   const characterIndex = charactersInfo.findIndex(character => character.id === parseInt(id))
   if (characterIndex >= 0) {
-    const clone = {...charactersInfo[characterIndex]}
-    return clone
+    return charactersInfo[characterIndex]
   }
+
   const response = await fetch(`https://dragonball-api.com/api/characters/${id}`)
   const data = await response.json()
   const result = dragonBallApiToCharacter(data)

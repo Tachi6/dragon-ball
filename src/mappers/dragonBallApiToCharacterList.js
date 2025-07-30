@@ -1,5 +1,5 @@
 export const dragonBallApiToCharacterList = (charactersList) => {
-
+  // Harcodejo els personatges que no tenien Ki, perque no hi hagi cartes nules
   const editedKi = charactersList.map((character) => {
     if (character.name.includes('Kaio-shin del')) {
       character.ki = '2.2 Billion'

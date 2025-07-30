@@ -31,20 +31,20 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="theme-changer">
-    <div class="side">
+  <div class="theme-changer">
+    <div class="theme-button">
       <label for="light">
         <input type="radio" name="theme-mode" id="light" value="light" @change="changeTheme" checked>
         <LightMode class="svg"/>
       </label>
     </div>
-    <div class="side">
+    <div class="theme-button">
       <label for="auto">
-        <input type="radio" name="theme-mode" id="auto" value="auto" @change="changeTheme" checked>
+        <input type="radio" name="theme-mode" id="auto" value="auto" @change="changeTheme">
         <AutoMode class="svg"/>
       </label>
     </div>
-    <div class="side">
+    <div class="theme-button">
       <label for="dark">
         <input type="radio" name="theme-mode" id="dark" value="dark" @change="changeTheme">
         <DarkMode class="svg"/>
@@ -68,7 +68,7 @@ onMounted(() => {
   flex-direction: column;
 }
 
-.side {
+.theme-button {
   width: 100%;
   height: 26px;
   transition: 0.25s;
@@ -89,7 +89,7 @@ label:hover {
   background-color: rgba(0, 0, 0, 0.100);
 }
 
-.side:has(input[type="radio"]:checked) {
+.theme-button:has(input[type="radio"]:checked) {
   background-color: var(--action-color);
 }
 

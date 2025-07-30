@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import {onMounted} from 'vue';
+import { onMounted } from 'vue';
 
 const router = useRouter()
 
@@ -24,20 +24,22 @@ const openDetails = () => {
 <template>
   <div class="card-container" @click="openDetails">
     <div class="card-background"></div>
+    <!-- Caracteristiques que nomes es veu si la carta esta de cara -->
     <div class="text-container">
       <img :src="props.character.image" alt="character-image" class="card-img">
       <div class="card-text">
         <h2 class="card-h2">{{ props.character.name }}</h2>
-        <div class="specs">
-          <h4 class="number">{{ props.character.ki }}</h4>
-          <p class="label">Ki</p>
+        <div class="card-specs">
+          <h4 class="card-number">{{ props.character.ki }}</h4>
+          <p class="card-label">Ki</p>
         </div>
-        <div class="specs">
-          <h4 class="number">{{ props.character.maxKi }}</h4>
-          <p class="label">MaxKi</p>
+        <div class="card-specs">
+          <h4 class="card-number">{{ props.character.maxKi }}</h4>
+          <p class="card-label">MaxKi</p>
         </div>
       </div>
     </div>
+    <!-- Imatge que nomes es veu si la carta simula que esta girada -->
     <div class="image-container hidden">
       <img class="img-logo" alt="Dragon Ball Z logo" src="../assets/img/dragon-ball-z-logo.svg">
     </div>
@@ -104,7 +106,7 @@ const openDetails = () => {
     font-size: 1.5em;
   }
 
-  .specs {
+  .card-specs {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -113,14 +115,14 @@ const openDetails = () => {
     gap: 10px;
   }
 
-  .number {
+  .card-number {
     font-size: 1em;
     letter-spacing: 0.45px;
     color: var(--action-color);
     font-family: mulish-extrabold;
   }
 
-  .label {
+  .card-label {
     letter-spacing: 0.35px;
     font-family: graphik-light;
   }

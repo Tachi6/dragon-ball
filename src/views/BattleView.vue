@@ -6,12 +6,12 @@ import {ref, onMounted, watch} from 'vue';
 const cards = ref([])
 const playCards = ref([])
 
-const gameCard = ref(0)
+const gameCardNumber = ref(0)
 const playerCard = ref()
 const computerCard = ref()
 const playerPoints = ref(0)
 const computerPoints = ref(0)
-const boxText = ref('')
+const handWinnerText = ref('')
 const showNewGameButton = ref(true)
 const showHintText = ref(true)
 const showHandWinner = ref(false)
@@ -19,15 +19,15 @@ const groupCards = ref(false)
 
 const htmlCards = ref([])
 const cardsStyles = ref([])
-const cardsDescription = ref([])
+const cardsDescriptions = ref([])
 const cardsImages = ref([])
-const winnerContainer = ref()
+const winnerTextContainer = ref()
 
 const loadHTMLelements = () => {
-  cardsDescription.value = document.querySelectorAll('.card-container .text-container')
+  cardsDescriptions.value = document.querySelectorAll('.card-container .text-container')
   cardsImages.value = document.querySelectorAll('.card-container .image-container')
   htmlCards.value = document.querySelectorAll('.card-container')
-  winnerContainer.value = document.querySelector('.hand-winner p')
+  winnerTextContainer.value = document.querySelector('.hand-winner-container p')
 
   htmlCards.value.forEach((element, index) => {
     element.classList.add(`card${index}`)
@@ -35,17 +35,38 @@ const loadHTMLelements = () => {
   })
 }
 
-onMounted(async () => {
-  cards.value = await obtainCharacters()
+const obtainPlayingCards = async () => {
+  const tempCards = sortCards(cards.value)
 
-  await obtainPlayingCards()
+  for (let i = 0; i < tempCards.length; i++) {
+    // Si la carta no te transformacions, ni Ki diferent, ja es valida
+    if (tempCards[i].ki === tempCards[i].maxKi) {
+      continue
+    }
 
-  loadHTMLelements()
+    const cardInfo = await obtainCharacterInfo(tempCards[i].id)
 
-  resetCardsPositionOrigin()
-})
+    // Si la carta te transformacions, obtinc les dades detallades, i agafo una random que sera la que jugara
+    if (cardInfo.transformations.length > 1) {
+      const randomIndex = Math.floor(Math.random() * cardInfo.transformations.length)
 
-const resetCardsPositionOrigin = async () => {
+      const ki = cardInfo.transformations[randomIndex].ki
+      const name = cardInfo.transformations[randomIndex].name === 'Base' ? tempCards[i].name : cardInfo.transformations[randomIndex].name
+      const image = cardInfo.transformations[randomIndex].image
+
+      tempCards[i] = obtainEditedCard(tempCards[i], ki, name, image)
+    }
+    // Si la carta te nomes la transfomació "base" que he creat jo , pero diferents Ki
+    else {
+      const ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
+
+      tempCards[i] = obtainEditedCard(tempCards[i], ki)
+    }
+  }
+  playCards.value = tempCards
+}
+
+const resetCardsPositionToDeck = async () => {
   cardsStyles.value.forEach(async (element, index) => {
     element.style.top = '0'
     element.style.right = '50%'
@@ -59,11 +80,11 @@ const resetCardsPositionOrigin = async () => {
   })
 }
 
-const sortElements = (elements) => {
-  const result = [...elements]
+const sortCards = (cards) => {
+  const result = [...cards]
 
   for (let i = 0; i < result.length; i++) {
-    const newIndex = Math.floor(Math.random() * elements.length);
+    const newIndex = Math.floor(Math.random() * cards.length);
     const oldElement = result[newIndex]
     result[newIndex] = result[i]
     result[i] = oldElement
@@ -72,33 +93,15 @@ const sortElements = (elements) => {
   return result
 }
 
-const obtainPlayingCards = async () => {
-  const tempCards = sortElements(cards.value)
+onMounted(async () => {
+  cards.value = await obtainCharacters()
 
-  for (let i = 0; i < tempCards.length; i++) {
-    if (tempCards[i].ki === tempCards[i].maxKi) {
-      continue
-    }
+  await obtainPlayingCards()
 
-    const cardInfo = await obtainCharacterInfo(tempCards[i].id)
+  loadHTMLelements()
 
-    if (cardInfo.transformations.length > 1) {
-      const randomIndex = Math.floor(Math.random() * cardInfo.transformations.length)
-
-      const ki = cardInfo.transformations[randomIndex].ki
-      const name = cardInfo.transformations[randomIndex].name === 'Base' ? tempCards[i].name : cardInfo.transformations[randomIndex].name
-      const image = cardInfo.transformations[randomIndex].image
-
-      tempCards[i] = obtainEditedCard(tempCards[i], ki, name, image)
-    }
-    else {
-      const ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
-
-      tempCards[i] = obtainEditedCard(tempCards[i], ki)
-    }
-  }
-  playCards.value = tempCards
-}
+  resetCardsPositionToDeck()
+})
 
 const obtainEditedCard = (card, ki, name, image) => {
   return {
@@ -115,39 +118,58 @@ const obtainEditedCard = (card, ki, name, image) => {
   }
 }
 
-const selectCard = () => playCards.value[gameCard.value]
-
 const nextCard = () => {
-  if (gameCard.value === cards.value.length) return
+  // Comprovo si queden cartes per jugar, per si de cas falla l'anulacio del click
+  if (gameCardNumber.value === cards.value.length) return
 
-  if (gameCard.value !== 0) {
-    cardsStyles.value[gameCard.value - 1].style.zIndex = 0
-    cardsStyles.value[gameCard.value - 2].style.zIndex = 0
+  // Perque les cartes que ja estan jugades quedin sota de les noves que vindran
+  if (gameCardNumber.value !== 0) {
+    cardsStyles.value[gameCardNumber.value - 1].style.zIndex = 0
+    cardsStyles.value[gameCardNumber.value - 2].style.zIndex = 0
   }
 
+  // Torn del jugador
   moveCards()
-  playerCard.value = selectCard()
-  gameCard.value++
+  playerCard.value = playCards.value[gameCardNumber.value]
+  gameCardNumber.value++
 
+  // Torn de la computadora
   moveCards()
-  computerCard.value = selectCard()
-  gameCard.value++
+  computerCard.value = playCards.value[gameCardNumber.value]
+  gameCardNumber.value++
 
+  // Veure quina de les 2 cartes guanya
   comparePoints(playerCard.value.ki, computerCard.value.ki)
 }
 
-const moveCards = () => {
-  cardsStyles.value[gameCard.value].classList.add('flipUp')
-  cardsStyles.value[gameCard.value].style.transform = 'translate(0)'
-  cardsStyles.value[gameCard.value].style.right = gameCard.value % 2 !== 0
-  ? `${(gameCard.value - 1) * 1.5}px`
-  : `calc(100% - ${240 + (gameCard.value * 1.5)}px)`
-  cardsStyles.value[gameCard.value].style.top = 'calc(100% - 336px)'
-  cardsStyles.value[gameCard.value].style.pointerEvents = 'none';
-  cardsStyles.value[gameCard.value].style.cursor = 'default';
-  flipCards(gameCard.value)
+// Per voltejar les cartes que es vagin seleccionant
+const flipCards = async (card) => {
+  if (card !== undefined) {
+    await delay(250)
+    cardsImages.value[card].classList.add('hidden')
+    cardsDescriptions.value[card].classList.remove('hidden')
+  }
+  else {
+    await delay(250)
+    cardsImages.value.forEach(element => element.classList.remove('hidden'))
+    cardsDescriptions.value.forEach(element => element.classList.add('hidden'))
+  }
 }
 
+// Per colocar les cartes voltejades al costat del jugador o la computadora
+const moveCards = () => {
+  cardsStyles.value[gameCardNumber.value].classList.add('flipUp')
+  cardsStyles.value[gameCardNumber.value].style.transform = 'translate(0)'
+  cardsStyles.value[gameCardNumber.value].style.right = gameCardNumber.value % 2 !== 0
+  ? `${(gameCardNumber.value - 1) * 1.5}px`
+  : `calc(100% - ${240 + (gameCardNumber.value * 1.5)}px)`
+  cardsStyles.value[gameCardNumber.value].style.top = 'calc(100% - 336px)'
+  cardsStyles.value[gameCardNumber.value].style.pointerEvents = 'none';
+  cardsStyles.value[gameCardNumber.value].style.cursor = 'default';
+  flipCards(gameCardNumber.value)
+}
+
+// He de parsejar els Ki i arreglar els strings per poder comparar quina carta guanya
 const comparePoints = (playerKi, computerKi) => {
   const units = {
     'billion': 1_000_000_000,
@@ -185,78 +207,69 @@ const comparePoints = (playerKi, computerKi) => {
 
   if (playerKi > computerKi) {
     playerPoints.value++
-    if (gameCard.value <= cards.value.length - 2) {
-      boxText.value = 'Jugador gana la mano'
+    if (gameCardNumber.value <= cards.value.length - 2) {
+      handWinnerText.value = 'Jugador gana la mano'
     }
   }
   else if (computerKi > playerKi) {
     computerPoints.value++
-    if (gameCard.value <= cards.value.length - 2) {
-      boxText.value = 'Computer gana la mano'
+    if (gameCardNumber.value <= cards.value.length - 2) {
+      handWinnerText.value = 'Computer gana la mano'
     }
   }
   else {
-    if (gameCard.value <= cards.value.length - 2) {
-      boxText.value = 'La mano queda empatada'
+    if (gameCardNumber.value <= cards.value.length - 2) {
+      handWinnerText.value = 'La mano queda empatada'
     }
   }
 }
 
-watch(gameCard, () => {
-  if (gameCard.value === 2) {
+watch(gameCardNumber, () => {
+  // Per treure la opacitat al quadre on va dient qui guanya la ma o la partida
+  if (gameCardNumber.value === 2) {
     showHandWinner.value = true
-    winnerContainer.value.style.opacity = '1'
+    winnerTextContainer.value.style.opacity = '1'
   }
 
-  if (gameCard.value === cards.value.length && gameCard.value !== 0) {
+  // Per analitzar qui guanya la partida
+  if (gameCardNumber.value === cards.value.length && gameCardNumber.value !== 0) {
     if (playerPoints.value > computerPoints.value) {
-      boxText.value = 'Jugador gana la partida'
+      handWinnerText.value = 'Jugador gana la partida'
     }
     else if (computerPoints.value > playerPoints.value) {
-      boxText.value = 'Computer gana la partida'
+      handWinnerText.value = 'Computer gana la partida'
     }
     else {
-      boxText.value = 'La partida queda empatada'
+      handWinnerText.value = 'La partida queda empatada'
     }
 
     showNewGameButton.value = true
   }
 })
 
-const flipCards = async (card) => {
-  if (card !== undefined) {
-    await delay(250)
-    cardsImages.value[card].classList.add('hidden')
-    cardsDescription.value[card].classList.remove('hidden')
-  }
-  else {
-    await delay(250)
-    cardsImages.value.forEach(element => element.classList.remove('hidden'))
-    cardsDescription.value.forEach(element => element.classList.add('hidden'))
-  }
-}
-
 const newGame = async () => {
+  // Nomes ho fa si no es la primera partida, recull les cartes i les volteja, i les remena
   if (!showHintText.value) {
     collectCards()
     await delay(1500)
     await obtainPlayingCards()
-    resetCardsPositionOrigin()
-    winnerContainer.value.style.opacity = '0'
+    resetCardsPositionToDeck()
+    winnerTextContainer.value.style.opacity = '0'
   }
 
   showNewGameButton.value = false
   showHintText.value = false
 
   await delay(500)
-  gameCard.value = 0
+  gameCardNumber.value = 0
   playerCard.value = undefined
   computerCard.value = undefined
   playerPoints.value = 0
   computerPoints.value = 0
-  boxText.value = ''
+  handWinnerText.value = ''
 }
 
+// Recollir les cartes i voltejar-les
 const collectCards = async () => {
   cardsStyles.value.forEach((element, index) => element.style.right = index % 2 === 0 ? 'calc(100% - 240px)' : '0')
   await delay(500)
@@ -266,6 +279,7 @@ const collectCards = async () => {
   groupCards.value = false
 }
 
+// Per poder quadrar el final de les animacions amb les transicions i girs de cartes, utilitzant await
 const delay = (duration) => {
   return new Promise(resolve => setTimeout(resolve, duration));
 }
@@ -273,28 +287,26 @@ const delay = (duration) => {
 </script>
 
 <template>
-  <div class="board">
-    <div class="playing-cards">
-      <div v-show="showHintText" class="hint-text-container">
-        <p class="hint-text">Pulsa en <b>Nueva partida</b> para barajar las cartas y comenzar la batalla. Una vez dentro del juego, pulsa en el mazo de cartas para mostrar las primeras 2 cartas que lucharan. El jugador con mayor <b>Ki</b> de las 2 cartas mostradas se anotará el punto. Si la puntuación de ambas cartas es igual, nadie se anota puntos. Sigue pulsando en el mazo para lanzar la mano de cartas del siguiente turno. Las cartas con transformaciones o <b>Ki</b> más alto que el del base, eligen al azar el <b>Ki</b> que adquieren, siendo este y no el <b>MaxKi</b> el valor para la batalla. Al final de la partida gane el jugador que acumula más puntos.</p>
-      </div>
-      <div v-show="!showHintText" class="game-cards">
-        <CharacterCard v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="[{ flipDown: groupCards }, `card${index}`]" @click="nextCard"/>
-      </div>
-      <div class="scoreboard">
-        <button class="points-box">Player {{ playerPoints }}</button>
-        <Transition>
-          <button v-show="showNewGameButton" class="new-game" @click="newGame">Nueva partida</button>
-        </Transition>
-        <button class="points-box">Computer {{ computerPoints }}</button>
-      </div>
-      <div class="hand-winner">
-        <Transition>
-          <p v-show="showHandWinner">{{ boxText }}</p>
-        </Transition>
-      </div>
+  <main class="game-board">
+    <div v-show="showHintText" class="hint-text-container">
+      <p class="hint-text">Pulsa en <b>Nueva partida</b> para barajar las cartas y comenzar la batalla. Una vez dentro del juego, pulsa en el mazo de cartas para mostrar las primeras 2 cartas que lucharan. El jugador con mayor <b>Ki</b> de las 2 cartas mostradas se anotará el punto. Si la puntuación de ambas cartas es igual, nadie se anota puntos. Sigue pulsando en el mazo para lanzar la mano de cartas del siguiente turno. Las cartas con transformaciones o <b>Ki</b> más alto que el del base, eligen al azar el <b>Ki</b> que adquieren, siendo este y no el <b>MaxKi</b> el valor para la batalla. Al final de la partida gane el jugador que acumula más puntos.</p>
     </div>
-  </div>
+    <div v-show="!showHintText" class="game-cards">
+      <CharacterCard v-for="(card, index) in playCards" :key="`c${index}`" :character="card" :back-card="true" :class="[{ flipDown: groupCards }, `card${index}`]" @click="nextCard"/>
+    </div>
+    <div class="scoreboard">
+      <button class="points-box">Player {{ playerPoints }}</button>
+      <Transition>
+        <button v-show="showNewGameButton" class="new-game-button" @click="newGame">Nueva partida</button>
+      </Transition>
+      <button class="points-box">Computer {{ computerPoints }}</button>
+    </div>
+    <div class="hand-winner-container">
+      <Transition>
+        <p v-show="showHandWinner">{{ handWinnerText }}</p>
+      </Transition>
+    </div>
+  </main>
 </template>
 
 <style scoped>
@@ -327,11 +339,8 @@ const delay = (duration) => {
   }
 }
 
-.board {
+.game-board {
   margin-top: 20px;
-}
-
-.playing-cards {
   width: 80%;
   height: 780px;
   margin: auto;
@@ -361,6 +370,15 @@ const delay = (duration) => {
   width: 100%;
 }
 
+.card-container {
+  transition: 0.5s linear;
+  cursor: pointer;
+  transform: translateX(86%);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .flipUp {
   animation-name: flip-up;
   animation-duration: 0.5s;
@@ -371,15 +389,6 @@ const delay = (duration) => {
   animation-name: flip-down;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;
-}
-
-.card-container {
-  transition: 0.5s linear;
-  cursor: pointer;
-  transform: translateX(86%);
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .scoreboard {
@@ -402,22 +411,23 @@ const delay = (duration) => {
   pointer-events: none;
 }
 
-.new-game {
+.new-game-button {
   width: 120px;
   padding: 10px 10px;
 }
 
-.hand-winner {
+.hand-winner-container {
   width: 100%;
   height: 336px;
 }
 
-.hand-winner p {
+.hand-winner-container p {
   width: 120px;
   height: 96px;
   margin: 120px auto;
   padding: 10px 10px;
   background-color: var(--action-color);
+  font-family: graphik-medium;
   text-align: center;
   opacity: 0;
 }

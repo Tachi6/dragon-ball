@@ -11,6 +11,7 @@ export const dragonBallApiToCharacter = (dragonBallCharacter) => {
     transformations: dragonBallCharacter.transformations,
   }
 
+  // Afegeixo la transformació base com a primera per poder mostrar-les totes i anar seleccionant-les
   const baseCharacter = {
     id: character.id,
     name: 'Base',
@@ -21,6 +22,7 @@ export const dragonBallApiToCharacter = (dragonBallCharacter) => {
 
   character.transformations.unshift(baseCharacter)
 
+  // Hardcodejo les 3 fotos que no tenien transparencia perque la web quedi bonica
   const editedTransformations = character.transformations.map(transformation => {
     if (transformation.id === 4) {
       transformation.image = 'https://dokkan.wiki/assets/global/en/character/card/1026900/card_1026900_character.png'
@@ -36,6 +38,7 @@ export const dragonBallApiToCharacter = (dragonBallCharacter) => {
     }
     return transformation
   })
+
   character.transformations = editedTransformations
 
   return character
