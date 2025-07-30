@@ -83,6 +83,8 @@ const openDetails = () => {
     right: 0;
     margin-left: auto;
     margin-right: auto;
+    user-select: none;
+    transition: 0.5s
   }
 
   .card-text {
@@ -94,6 +96,7 @@ const openDetails = () => {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
+    user-select: none;
   }
 
   .card-h2 {
@@ -137,6 +140,7 @@ const openDetails = () => {
     height: 50px;
     width: auto;
     opacity: 0.5;
+    user-select: none;
   }
 
   .hidden {

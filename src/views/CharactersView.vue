@@ -2,15 +2,16 @@
 import CharacterCard from '../components/CharacterCard.vue'
 import ArrowBack from '../components/icons/ArrowBack.vue'
 import ArrowForward from '../components/icons/ArrowForward.vue'
-import {obtainCharacters, totalPages, obtainCharactersByPage, characters} from '@/services/dragon_ball_services';
+import {obtainCharacters, obtainCharactersByPage} from '@/services/dragon_ball_services';
 import {ref, onMounted, computed, watch} from 'vue';
 
 const page = ref(1)
+const allCharacters = ref([])
 const charactersList = ref([])
 const searchString = ref('')
 
 watch(searchString, () => {
-  charactersList.value = characters.filter((character) => {
+  charactersList.value = allCharacters.value.filter((character) => {
     return character.name.toLowerCase().includes(searchString.value.toLocaleLowerCase())
   })
 })
@@ -20,7 +21,7 @@ const isFirstPage = computed(() => {
 })
 
 const isLastPage = computed(() => {
-  return page.value !== totalPages
+  return page.value !== Math.ceil(allCharacters.value.length / 8)
 })
 
 const prevPage = async () => {
@@ -34,9 +35,8 @@ const nextPage = async () => {
 }
 
 onMounted( async () => {
-  if (characters.length === 0){
-    await obtainCharacters()
-  }
+  allCharacters.value = await obtainCharacters()
+
   charactersList.value = obtainCharactersByPage(page.value)
 })
 
@@ -48,14 +48,14 @@ onMounted( async () => {
         <ArrowBack />
       </button>
       <button class="placeholder" v-else disabled></button>
-      <input type="text" class="search-field" placeholder="Buscar" v-model="searchString">
+      <input type="text" name="search" class="search-field" placeholder="Buscar" v-model="searchString">
       <button class="arrow-container" v-if="isLastPage" @click="nextPage">
         <ArrowForward />
       </button>
       <button class="placeholder" v-else disabled></button>
     </div>
     <div class="wrapper">
-      <CharacterCard v-for="(character, index) in charactersList" :key="`ch${index}`" :character="character" />
+      <CharacterCard v-for="(character, index) in charactersList" :key="`ch${index}-${character.id}`" :character="character" />
     </div>
   </main>
 </template>

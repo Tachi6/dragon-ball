@@ -1,6 +1,6 @@
 <script setup>
 import CharacterCard from '../components/CharacterCard.vue'
-import {obtainCharacters, obtainCharacterInfo, characters} from '@/services/dragon_ball_services';
+import {obtainCharacters, obtainCharacterInfo} from '@/services/dragon_ball_services';
 import {ref, onMounted, watch} from 'vue';
 
 const cards = ref([])
@@ -36,11 +36,7 @@ const loadHTMLelements = () => {
 }
 
 onMounted(async () => {
-  if (characters.length === 0){
-    await obtainCharacters()
-  }
-
-  cards.value = characters
+  cards.value = await obtainCharacters()
 
   await obtainPlayingCards()
 
@@ -49,13 +45,12 @@ onMounted(async () => {
   resetCardsPositionOrigin()
 })
 
-const resetCardsPositionOrigin = () => {
-  cardsStyles.value.forEach((element, index) => {
+const resetCardsPositionOrigin = async () => {
+  cardsStyles.value.forEach(async (element, index) => {
     element.style.top = '0'
     element.style.right = '50%'
-    setTimeout(() => {
-      element.style.right = `calc(${(cards.value.length - 1 - index) * 3}px + 50%)`
-    }, 500)
+    await delay(500)
+    element.style.right = `calc(${(cards.value.length - 1 - index) * 3}px + 50%)`
     element.style.zIndex = `${cards.value.length - index}`
     element.classList.remove('flipUp')
     element.style.transform = 'translateX(86%)';
@@ -88,17 +83,36 @@ const obtainPlayingCards = async () => {
     const cardInfo = await obtainCharacterInfo(tempCards[i].id)
 
     if (cardInfo.transformations.length > 1) {
-      cardInfo.transformations = sortElements(cardInfo.transformations)
+      const randomIndex = Math.floor(Math.random() * cardInfo.transformations.length)
 
-      tempCards[i].name = cardInfo.transformations[0].name === 'Base' ? tempCards[i].name : cardInfo.transformations[0].name
-      tempCards[i].ki = cardInfo.transformations[0].ki
-      tempCards[i].image = cardInfo.transformations[0].image
+      const ki = cardInfo.transformations[randomIndex].ki
+      const name = cardInfo.transformations[randomIndex].name === 'Base' ? tempCards[i].name : cardInfo.transformations[randomIndex].name
+      const image = cardInfo.transformations[randomIndex].image
+
+      tempCards[i] = obtainEditedCard(tempCards[i], ki, name, image)
     }
     else {
-      tempCards[i].ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
+      const ki = Math.floor(Math.random() * 2) === 0 ? tempCards[i].ki : tempCards[i].maxKi
+
+      tempCards[i] = obtainEditedCard(tempCards[i], ki)
     }
   }
   playCards.value = tempCards
+}
+
+const obtainEditedCard = (card, ki, name, image) => {
+  return {
+    id: card.id,
+    name: name === undefined ? card.name : name,
+    ki: ki,
+    maxKi: card.maxKi,
+    race: card.race,
+    gender: card.gender,
+    description: card.description,
+    image: image === undefined ? card.image : image,
+    affiliation: card.affiliation,
+    deletedAt: null,
+  }
 }
 
 const selectCard = () => playCards.value[gameCard.value]
@@ -209,53 +223,51 @@ watch(gameCard, () => {
   }
 })
 
-const flipCards = (card) => {
+const flipCards = async (card) => {
   if (card !== undefined) {
-    setTimeout(() => {
-      cardsImages.value[card].classList.add('hidden')
-      cardsDescription.value[card].classList.remove('hidden')
-    },250)
+    await delay(250)
+    cardsImages.value[card].classList.add('hidden')
+    cardsDescription.value[card].classList.remove('hidden')
   }
   else {
-    setTimeout(() => {
-      cardsImages.value.forEach(element => element.classList.remove('hidden'))
-      cardsDescription.value.forEach(element => element.classList.add('hidden'))
-    }, 250)
+    await delay(250)
+    cardsImages.value.forEach(element => element.classList.remove('hidden'))
+    cardsDescription.value.forEach(element => element.classList.add('hidden'))
   }
 }
 
 const newGame = async () => {
-
   if (!showHintText.value) {
     collectCards()
+    await delay(1500)
     await obtainPlayingCards()
     resetCardsPositionOrigin()
     winnerContainer.value.style.opacity = '0'
   }
-  // TODO: falta afinar animaciones
+
   showNewGameButton.value = false
   showHintText.value = false
 
-  setTimeout(async () => {
-    gameCard.value = 0
-    playerCard.value = undefined
-    computerCard.value = undefined
-    playerPoints.value = 0
-    computerPoints.value = 0
-    boxText.value = ''
-
-  }, 500)
+  await delay(500)
+  gameCard.value = 0
+  playerCard.value = undefined
+  computerCard.value = undefined
+  playerPoints.value = 0
+  computerPoints.value = 0
+  boxText.value = ''
 }
 
-const collectCards = () => {
+const collectCards = async () => {
   cardsStyles.value.forEach((element, index) => element.style.right = index % 2 === 0 ? 'calc(100% - 240px)' : '0')
-  setTimeout(() => {
-    groupCards.value = true
-    flipCards()
-  }, 500)
-  setTimeout(() => {
-    groupCards.value = false
-  }, 1000)
+  await delay(500)
+  groupCards.value = true
+  flipCards()
+  await delay(500)
+  groupCards.value = false
+}
+
+const delay = (duration) => {
+  return new Promise(resolve => setTimeout(resolve, duration));
 }
 
 </script>

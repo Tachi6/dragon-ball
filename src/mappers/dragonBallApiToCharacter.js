@@ -1,6 +1,7 @@
 export const dragonBallApiToCharacter = (dragonBallCharacter) => {
 
   const character = {
+    id: dragonBallCharacter.id,
     characterName: dragonBallCharacter.name,
     ki: dragonBallCharacter.ki,
     race: dragonBallCharacter.race,

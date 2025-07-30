@@ -6,7 +6,6 @@ import {obtainCharacterInfo} from '@/services/dragon_ball_services';
 const props = defineProps(['id'])
 const character = ref({})
 const transformations = ref([])
-const planet = ref('')
 
 const showTransformations = computed(() => {
   return transformations.value.length > 1
@@ -16,8 +15,6 @@ onMounted(async () => {
   character.value = await obtainCharacterInfo(props.id)
 
   transformations.value = character.value.transformations
-
-  planet.value = character.value.originPlanet.name
 })
 
 const changeTransformationView = (transformation) => {
@@ -46,7 +43,7 @@ const changeTransformationView = (transformation) => {
     </div>
     <h3 class="transformations-label" v-if="showTransformations">Transformaciones</h3>
     <div class="transformations" v-if="showTransformations">
-      <button class="transformation-button" v-for="(transformation, index) in transformations" :key="`t${index}`" @click="changeTransformationView(transformation)">
+      <button class="transformation-button" v-for="(transformation, index) in transformations" :key="`t${index}-${transformation.id}`" @click="changeTransformationView(transformation)">
         {{ transformation.name }}
       </button>
     </div>
