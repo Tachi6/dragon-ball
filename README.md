@@ -1,35 +1,8 @@
-# dragon-ball
+# Dragon ball Z
 
-This template should help get you started developing with Vue 3 in Vite.
+- Conoce todos los perrsonajes de Dragon Ball Z.
+- Lucha con ellos en un juego de cartas.
 
-## Recommended IDE Setup
+## Proyecto final del curso de Frontend Web Developer por la UOC
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- Proyecto realizado con Vue.js.
